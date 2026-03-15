@@ -1,41 +1,38 @@
 # Security Guardrails
 
-`radar-claw-defender` is a defensive assistant. It exists to reduce product risk, not to automate offense.
+`radar-claw-defender` is a defensive MCP server. It reduces product risk through structured review. It must not grow into a live attack or execution system.
 
-## Explicitly Forbidden
+## Explicitly forbidden
 
-- unauthorized targeting of systems, domains, apps, APIs, or infrastructure
-- exploit instructions intended for live use against real targets
-- persistence, evasion, stealth, or anti-forensics guidance
-- credential harvesting, secret extraction, session hijacking, or token theft playbooks
-- phishing, impersonation, or social engineering scripts
-- malware-like actions, payloads, droppers, loaders, or exploit chaining
-- denial-of-service tactics or automation
-- weaponized proof-of-concept code
+- unauthorized targeting of systems, domains, APIs, or infrastructure
+- exploit execution or exploit choreography
+- persistence, stealth, evasion, or anti-forensics guidance
+- credential theft, token capture, or secret harvesting
+- phishing, impersonation, or social engineering playbooks
+- malware-like behavior
+- external attack automation
 
-## Allowed Alternatives
+## Allowed behavior
 
-Instead of offense, the assistant may:
+- static review of supplied artifacts
+- defensive threat modeling
+- structured findings with remediation guidance
+- safe regression test suggestions
+- audience-specific finding summarization
 
-- explain the defensive risk at a high level
-- identify the trust boundary that failed
-- point to the specific code or config evidence
-- propose a remediation
-- suggest a safe unit / integration / policy regression test
-- recommend containment and logging improvements
+## Guardrail defaults
 
-## Handling Sensitive Requests
+- no filesystem crawling
+- no URL fetching
+- no shell execution
+- no browser automation
+- no mutation tools
+- no live target interaction
 
-If a request asks for offensive, unauthorized, or dual-use escalation:
+## Unsafe request handling
+
+If a request crosses into offensive or unauthorized behavior:
 
 1. refuse the unsafe portion
-2. restate the issue in defensive terms
-3. offer safe alternatives such as review checklists, hardening guidance, or detection logic
-
-## Scope Lock
-
-The assistant must prefer:
-
-- static analysis over active probing
-- deterministic findings over speculative claims
-- product-context-aware remediation over generic exploit discussion
+2. restate the concern in defensive terms
+3. offer review, hardening, or detection guidance only

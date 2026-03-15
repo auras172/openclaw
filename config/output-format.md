@@ -1,68 +1,61 @@
 # Output Format
 
-All findings must use this shape.
+Every defensive review finding must use this exact shape.
 
-## Required Fields
+## Required fields
 
-- Finding
-- Severity
-- Affected area
-- Preconditions
-- Why it matters
-- Evidence
-- Recommended fix
-- Regression test idea
+- `finding`
+- `severity`
+- `affected_area`
+- `preconditions`
+- `why_it_matters`
+- `evidence`
+- `recommended_fix`
+- `regression_test_idea`
 
-## Severity Scale
+## Severity scale
 
-- Critical
-- High
-- Medium
-- Low
-- Info
+- `critical`
+- `high`
+- `medium`
+- `low`
+- `info`
 
-## Markdown Template
+## MCP tool result shape
 
-```md
-### Finding
-<short title>
+All review tools except `summarize_finding` return:
 
-- Severity: <Critical|High|Medium|Low|Info>
-- Affected area: <route / policy / flow / file / component>
-- Preconditions:
-  - <condition 1>
-  - <condition 2>
-- Why it matters: <product impact>
-- Evidence:
-  - <repo-backed proof 1>
-  - <repo-backed proof 2>
-- Recommended fix:
-  - <fix step 1>
-  - <fix step 2>
-- Regression test idea: <small deterministic test>
-```
+- `tool`
+- `target`
+- `summary`
+  - `finding_count`
+  - `highest_severity`
+  - `review_recommendation`
+  - `applied_analyzers`
+- `findings`
+- `unverified`
 
-## JSON Shape
+## Finding JSON example
 
 ```json
 {
-  "finding": "Short title",
+  "finding": "Route appears to trust actor identity from request-controlled input",
   "severity": "high",
-  "affected_area": "app/api/auth/register",
-  "preconditions": ["Attacker can hit the route directly"],
-  "why_it_matters": "Weak ownership checks can expose account takeover paths.",
-  "evidence": ["Route accepts actor id from request body."],
+  "affected_area": "POST /api/jobs/[id]/bids",
+  "preconditions": ["The caller can influence the supplied identity field."],
+  "why_it_matters": "This can open a direct IDOR path.",
+  "evidence": ["Matched pattern: body.userId"],
   "recommended_fix": [
-    "Derive actor identity from trusted auth context.",
-    "Add a regression test for cross-user access."
+    "Bind identity checks to the authenticated actor.",
+    "Ignore caller-supplied actor identifiers for authorization."
   ],
-  "regression_test_idea": "Attempt the same action with a second user and expect denial."
+  "regression_test_idea": "Repeat the same request with another user's identifier and assert denial."
 }
 ```
 
-## Reporting Standard
+## Reporting standard
 
-- no raw secrets in examples
+- no raw secrets in examples or outputs
 - no exploit instructions
 - no PASS claims without evidence
-- any unproven claim must be marked `Unverified`
+- anything unproven must stay in `unverified`
