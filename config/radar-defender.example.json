@@ -1,0 +1,26 @@
+{
+  "minimumSeverity": "medium",
+  "enabledAnalyzers": [
+    "auth-bypass",
+    "authorization-idor",
+    "rls-alignment",
+    "admin-boundary",
+    "otp-abuse",
+    "webhook-verification",
+    "xss-rendering",
+    "data-exposure",
+    "rate-limiting",
+    "input-validation"
+  ],
+  "outputMode": "markdown",
+  "productContextOverrides": {
+    "productName": "Radar Meseriași",
+    "deploymentSurface": ["vercel", "supabase", "twilio"],
+    "priorityRiskAreas": [
+      "auth-bypass",
+      "authorization-idor",
+      "rls-policy-gaps",
+      "admin-privilege-escalation"
+    ]
+  }
+}
